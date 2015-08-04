@@ -84,6 +84,13 @@ class NewRelicInstaller(object):
                                " using the manual key.")
             self.license_key = self._ctx['NEWRELIC_LICENSE']
             self._detected = True
+			
+		if 'NEWRELIC_APPNAME' in self._ctx.keys():
+			if self._detected:
+				self._log.warn("Detected a NewRelic Service & Manual Key,")
+			self.app_name = self._ctx['NEWRELIC_APPNAME']
+			self._detected = True
+	
 
         if self._detected:
             newrelic_so_name = 'newrelic-%s%s.so' % (
