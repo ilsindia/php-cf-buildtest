@@ -75,8 +75,18 @@ class NewRelicInstaller(object):
 
     def _load_newrelic_info(self):
         vcap_app = self._ctx.get('VCAP_APPLICATION', {})
-        self.app_name = vcap_app.get('name', None)
-        self._log.debug("App Name [%s]", self.app_name)
+#        self.app_name = vcap_app.get('name', None)
+#        self._log.debug("App Name [%s]", self.app_name)
+
+ 		if 'NEWRELIC_APPNAME' in self._ctx.keys():
+            if self._detected:
+            self._log.warn("Detected a NewRelic Service & Manual Key,")
+            self.app_name = self._ctx['NEWRELIC_APPNAME']
+            self._detected = True
+        else:
+            self.app_name = vcap_app.get('name', None)
+            self._log.debug("App Name [%s]", self.app_name)
+
 
         if 'NEWRELIC_LICENSE' in self._ctx.keys():
             if self._detected:
